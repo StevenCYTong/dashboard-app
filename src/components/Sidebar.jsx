@@ -7,7 +7,8 @@ import { links } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 
 const Sidebar = () => {
-	const { activeMenu, setActiveMenu, screenSize } = useStateContext();
+	const { activeMenu, setActiveMenu, screenSize, currentColor } =
+		useStateContext();
 	const activeLink =
 		'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-log text-white text-md m-2';
 	const normalLink =
@@ -40,6 +41,7 @@ const Sidebar = () => {
 								onClick={() =>
 									setActiveMenu((prevActiveMenu) => !prevActiveMenu)
 								}
+								style={{ color: currentColor }}
 								className='text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden'
 							>
 								<MdOutlineCancel />
@@ -49,12 +51,17 @@ const Sidebar = () => {
 					<div className='mt-10'>
 						{links.map((item) => (
 							<div key={item.title}>
-								<p className='text-gray-400 m-3 mt-4 uppercase'>{item.title}</p>
+								<p className='text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase'>
+									{item.title}
+								</p>
 								{item.links.map((link) => (
 									<NavLink
 										to={`/${link.name}`}
 										key={link.name}
 										onClick={handleCloseSidBar}
+										style={({ isActive }) => ({
+											backgroundColor: isActive ? currentColor : '',
+										})}
 										className={({ isActive }) =>
 											isActive ? activeLink : normalLink
 										}
